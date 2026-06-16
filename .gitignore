@@ -1,0 +1,9 @@
+# 操作系统垃圾文件 / OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 编辑器 / editors
+.vscode/
+.idea/
+*.swp

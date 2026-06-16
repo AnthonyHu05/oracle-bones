@@ -1,0 +1,400 @@
+/* =====================================================================
+   汉字的演变 · The Evolution of Chinese Characters
+   样式表 / Stylesheet
+
+   风格：克制的编辑 / 博物馆风。宣纸般的暖白 + 朱红印章作点缀，
+   宋体标题、干净无衬线正文、细线与柔和阴影、克制的动效。
+   Restrained editorial / gallery look: warm paper white, a vermilion
+   seal accent, serif display, clean sans body, hairlines, soft motion.
+   ===================================================================== */
+
+:root {
+  /* 青铜 · 铜绿 + 素牙白 / bronze & celadon palette */
+  --paper:    #EAECE6;   /* 素牙白（展墙）/ cool ivory wall */
+  --paper-2:  #F5F6F1;   /* 卡片白 / card white */
+  --paper-3:  #DEE2DA;   /* 浅青灰 / soft section fill */
+  --ink:      #20251F;   /* 墨 / cool ink */
+  --ink-soft: #5C625A;   /* 次要文字 / secondary text */
+  --line:     rgba(32,37,31,0.16);  /* 细线 / hairline */
+  --seal:     #2F6E63;   /* 铜绿（印章/点缀）/ patina-bronze teal */
+  --seal-deep:#245349;
+  --gold:     #B7892F;   /* 暖金（答对/火苗等暖点缀）/ warm gold accent */
+  --radius:   12px;
+  --shadow-s: 0 1px 2px rgba(32,37,31,0.06);
+  --shadow-m: 0 2px 12px rgba(32,37,31,0.07);
+  --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong",
+           "SimSun", Georgia, "Times New Roman", serif;
+  --sans:  "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+           -apple-system, "Segoe UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+/* 让 hidden 属性对所有元素生效（覆盖 .big-btn 的 display）/ make [hidden] win over display rules */
+[hidden] { display: none !important; }
+
+html, body {
+  height: 100%;
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+}
+
+/* =====================================================================
+   语言切换 / language toggle
+   ===================================================================== */
+.lang-toggle {
+  position: fixed; top: 18px; right: 18px; z-index: 100;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px;
+  font-family: var(--sans); font-size: 0.82rem; letter-spacing: 0.04em;
+  color: var(--ink-soft); background: transparent;
+  border: 1px solid var(--line); border-radius: 999px;
+  cursor: pointer; transition: color .2s, border-color .2s;
+}
+.lang-toggle:hover { color: var(--ink); border-color: var(--ink-soft); }
+.lang-flag { display: none; }
+
+/* =====================================================================
+   视图切换 / view switching
+   ===================================================================== */
+.view { display: none; min-height: 100vh; padding: 32px 22px 72px; }
+.view.active { display: block; animation: fadeIn .45s ease both; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* =====================================================================
+   首页 / home
+   ===================================================================== */
+#view-home { display: none; }
+#view-home.active { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.home-inner { max-width: 640px; }
+
+/* 水墨 / 印章主视觉 / ink + seal hero mark */
+.mascot { margin-bottom: 26px; }
+.mascot-svg { width: clamp(120px, 26vw, 168px); height: auto; }
+
+.home-title { margin-bottom: 14px; }
+.home-title span {
+  display: block;
+  font-family: var(--serif); font-weight: 600;
+  font-size: clamp(2.1rem, 6.5vw, 3.4rem);
+  letter-spacing: 0.08em; color: var(--ink); line-height: 1.25;
+}
+.home-sub {
+  font-size: clamp(0.92rem, 2.6vw, 1.05rem);
+  line-height: 1.7; color: var(--ink-soft);
+  max-width: 30em; margin: 0 auto 34px;
+}
+
+/* 去掉飘动装饰 / floating decorations removed */
+.floaty { display: none; }
+
+/* =====================================================================
+   按钮 / buttons
+   ===================================================================== */
+.big-btn {
+  display: inline-block;
+  padding: 13px 34px;
+  font-family: var(--sans); font-size: 1rem; letter-spacing: 0.06em;
+  color: var(--paper-2); background: var(--seal);
+  border: none; border-radius: 8px;
+  cursor: pointer; transition: background .2s, transform .12s;
+}
+.big-btn:hover { background: var(--seal-deep); }
+.big-btn:active { transform: translateY(1px); }
+
+/* 克制的点击反馈（JS 临时添加）/ subtle tap feedback */
+.bounce { animation: tap .25s ease; }
+@keyframes tap { 50% { transform: scale(0.97); } }
+.pulse { /* 不再脉动 / no pulsing */ }
+
+/* 返回 / back（幽灵按钮）/ ghost back button */
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px;
+  font-family: var(--sans); font-size: 0.85rem; letter-spacing: 0.03em;
+  color: var(--ink-soft); background: transparent;
+  border: 1px solid var(--line); border-radius: 999px;
+  cursor: pointer; margin-bottom: 22px; transition: color .2s, border-color .2s;
+}
+.back-btn:hover { color: var(--ink); border-color: var(--ink-soft); }
+
+/* =====================================================================
+   汉字网格 / character grid
+   ===================================================================== */
+.grid-title {
+  text-align: center; font-family: var(--serif); font-weight: 500;
+  font-size: clamp(1.25rem, 4vw, 1.8rem); letter-spacing: 0.06em;
+  color: var(--ink); line-height: 1.5; margin: 4px 0 30px;
+}
+.char-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: clamp(12px, 2.4vw, 20px);
+  max-width: 760px; margin: 0 auto;
+}
+@media (max-width: 520px) { .char-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.char-card {
+  position: relative; aspect-ratio: 1 / 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px;
+  background: var(--paper-2);
+  border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow-s);
+  cursor: pointer; overflow: hidden;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.char-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-m); border-color: var(--ink-soft); }
+.char-card:active { transform: translateY(-1px); }
+.char-card .cc-glyph {
+  font-family: var(--serif); font-weight: 500;
+  font-size: clamp(2.2rem, 10vw, 3.4rem); line-height: 1; color: var(--ink);
+}
+.char-card .cc-label {
+  font-size: clamp(0.66rem, 2.2vw, 0.8rem); letter-spacing: 0.05em;
+  color: var(--ink-soft);
+}
+.char-card.tint { background: var(--paper-2); }  /* 统一卡片底色 / uniform card */
+.cc-soon { display: none; }
+
+/* =====================================================================
+   详情页 / detail
+   ===================================================================== */
+#view-detail { max-width: 600px; margin: 0 auto; text-align: center; }
+
+.detail-head { margin: 2px 0 18px; }
+.d-pinyin {
+  display: block; font-family: var(--serif); font-weight: 600;
+  font-size: clamp(1.5rem, 5vw, 2rem); letter-spacing: 0.04em; color: var(--ink);
+}
+.d-meaning {
+  display: block; font-size: clamp(0.9rem, 3vw, 1.05rem);
+  letter-spacing: 0.04em; color: var(--ink-soft); margin-top: 2px;
+}
+
+/* 像画框 / framed like an artwork */
+.stage-wrap {
+  position: relative; width: min(86vw, 380px);
+  margin: 8px auto 6px; padding: 10px;
+  background: var(--paper-2);
+  border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow-m);
+  cursor: pointer; user-select: none; touch-action: pan-y;
+}
+#glyph-svg { display: block; width: 100%; height: auto; }
+.tap-hint {
+  position: absolute; bottom: 10px; left: 0; right: 0;
+  font-size: 0.72rem; letter-spacing: 0.04em; color: var(--ink-soft);
+  opacity: 0.7; pointer-events: none;
+}
+.tap-hint.hide { display: none; }
+
+/* 时间轴 / timeline */
+.timeline {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 4px; width: min(92vw, 440px); margin: 18px auto 4px;
+}
+.tl-node {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 7px;
+  background: none; border: none; cursor: pointer; font-family: var(--sans);
+}
+.tl-dot {
+  width: 11px; height: 11px; border-radius: 50%;
+  background: var(--paper); border: 1.5px solid var(--ink-soft);
+  transition: background .25s, border-color .25s, transform .25s;
+}
+.tl-node.active .tl-dot { background: var(--seal); border-color: var(--seal); transform: scale(1.25); }
+.tl-label { font-size: 0.68rem; letter-spacing: 0.03em; color: var(--ink-soft); }
+.tl-node.active .tl-label { color: var(--ink); }
+
+/* 滑块 / slider */
+.stage-slider {
+  -webkit-appearance: none; appearance: none;
+  width: min(92vw, 440px); height: 3px; margin: 10px auto 2px; display: block;
+  background: var(--line); border-radius: 999px; outline: none;
+}
+.stage-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--paper-2); border: 1.5px solid var(--ink); cursor: pointer;
+  box-shadow: var(--shadow-s);
+}
+.stage-slider::-moz-range-thumb {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--paper-2); border: 1.5px solid var(--ink); cursor: pointer;
+}
+
+/* 说明文字 / caption */
+.d-caption {
+  min-height: 3.2em; max-width: 440px; margin: 16px auto 4px; padding: 0 8px;
+}
+.d-caption .cap-zh { display: block; font-family: var(--serif); font-size: clamp(0.98rem, 3.4vw, 1.12rem); color: var(--ink); }
+.d-caption .cap-en { display: block; font-size: 0.85em; color: var(--ink-soft); margin-top: 5px; }
+
+/* 上一步 / 下一步 / step buttons */
+.step-nav { display: flex; justify-content: center; gap: 16px; margin: 14px 0; }
+.round-btn {
+  width: 44px; height: 44px; border-radius: 50%;
+  font-size: 1rem; color: var(--ink); background: transparent;
+  border: 1px solid var(--line); cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.round-btn:hover { border-color: var(--ink-soft); background: var(--paper-3); }
+.round-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* 知识 / note —— 像展签 / like a gallery label */
+.d-fact {
+  max-width: 440px; margin: 16px auto; padding: 14px 18px; text-align: left;
+  background: var(--paper-2); border: 1px solid var(--line);
+  border-left: 3px solid var(--seal); border-radius: 6px;
+  font-size: clamp(0.85rem, 3vw, 0.95rem); line-height: 1.65; color: var(--ink);
+}
+.d-fact b { color: var(--seal-deep); font-weight: 600; }
+.d-fact .fact-en { display: block; color: var(--ink-soft); font-size: 0.9em; margin-top: 4px; }
+
+/* 占位（保留容错）/ placeholder fallback */
+.detail-placeholder {
+  max-width: 440px; margin: 18px auto; padding: 22px;
+  background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--radius);
+  font-size: 0.95rem; line-height: 1.7; color: var(--ink-soft);
+}
+.detail-placeholder .ph-glyph { font-family: var(--serif); font-size: 3.4rem; color: var(--ink); display: block; margin-bottom: 10px; }
+.detail-placeholder code { background: var(--paper-3); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+
+.next-char-btn { margin-top: 20px; background: var(--ink); }
+.next-char-btn:hover { background: #000; }
+
+/* =====================================================================
+   首页板块导航 / home section board
+   ===================================================================== */
+:root { --ok: var(--gold); }  /* 答对用暖金（和铜绿点缀区分）/ "correct" = warm gold, distinct from teal */
+
+.section-board {
+  display: flex; flex-direction: column; gap: 14px;
+  width: min(92vw, 460px); margin: 4px auto 0; text-align: left;
+}
+.section-card {
+  display: flex; align-items: center; gap: 16px; text-align: left;
+  padding: 16px 18px; background: var(--paper-2);
+  border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow-s); cursor: pointer; font-family: var(--sans);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.section-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-m); border-color: var(--ink-soft); }
+.section-card .sc-glyph {
+  flex: none; width: 52px; height: 52px; display: grid; place-items: center;
+  font-family: var(--serif); font-size: 1.8rem; color: var(--seal);
+  background: var(--paper-3); border-radius: 10px;
+}
+.section-card .sc-text { display: flex; flex-direction: column; gap: 3px; }
+.section-card .sc-title { font-family: var(--serif); font-size: 1.04rem; letter-spacing: 0.03em; color: var(--ink); }
+.section-card .sc-title small { font-weight: normal; font-style: italic; color: var(--ink-soft); font-size: 0.78em; margin-left: 6px; }
+.section-card .sc-desc { font-size: 0.8rem; line-height: 1.5; color: var(--ink-soft); }
+.section-card.soon { cursor: default; opacity: 0.6; }
+.section-card.soon:hover { transform: none; box-shadow: var(--shadow-s); border-color: var(--line); }
+.sc-soon-tag {
+  margin-left: auto; align-self: center; white-space: nowrap;
+  font-size: 0.64rem; letter-spacing: 0.06em; color: var(--ink-soft);
+  border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px;
+}
+
+/* =====================================================================
+   猜一猜甲骨文 / Guess the Oracle (quiz)
+   ===================================================================== */
+#view-quiz { max-width: 560px; margin: 0 auto; text-align: center; }
+.quiz-head {
+  display: flex; justify-content: space-between; align-items: center;
+  max-width: 440px; margin: 0 auto 4px;
+  font-size: 0.8rem; letter-spacing: 0.04em; color: var(--ink-soft);
+}
+.quiz-score { color: var(--seal-deep); }
+.quiz-prompt {
+  font-family: var(--serif); font-size: clamp(1.1rem, 3.6vw, 1.4rem);
+  color: var(--ink); margin: 8px 0 16px;
+}
+.quiz-stage {
+  width: min(64vw, 240px); margin: 0 auto 20px; padding: 10px;
+  background: var(--paper-2); border: 1px solid var(--line);
+  border-radius: var(--radius); box-shadow: var(--shadow-m);
+}
+#quiz-svg { display: block; width: 100%; height: auto; }
+.quiz-options {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  max-width: 440px; margin: 0 auto;
+}
+@media (max-width: 420px) { .quiz-options { gap: 8px; } }
+.quiz-option {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 14px 6px; background: var(--paper-2);
+  border: 1px solid var(--line); border-radius: var(--radius);
+  cursor: pointer; font-family: var(--sans);
+  transition: transform .12s ease, border-color .2s, background .2s;
+}
+.quiz-option:hover:not(:disabled) { transform: translateY(-2px); border-color: var(--ink-soft); }
+.quiz-option .qo-glyph { font-family: var(--serif); font-size: clamp(1.8rem, 7vw, 2.3rem); line-height: 1; color: var(--ink); }
+.quiz-option .qo-label { font-size: 0.68rem; letter-spacing: 0.02em; color: var(--ink-soft); }
+.quiz-option:disabled { cursor: default; }
+.quiz-option.correct { border-color: var(--ok); background: rgba(183,137,47,0.13); }
+.quiz-option.correct .qo-glyph, .quiz-option.correct .qo-label { color: var(--ok); }
+.quiz-option.wrong { opacity: 0.4; animation: shake .3s ease; }
+@keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.quiz-feedback { min-height: 2.2em; max-width: 440px; margin: 16px auto 4px; }
+.quiz-feedback .qf-zh { display: block; font-family: var(--serif); color: var(--ink); font-size: 1rem; }
+.quiz-feedback .qf-en { display: block; color: var(--ink-soft); font-size: 0.82em; margin-top: 3px; }
+#quiz-next { margin-top: 6px; }
+
+.quiz-result { max-width: 440px; margin: 36px auto 0; }
+.quiz-result .qr-score { font-family: var(--serif); font-size: 3.2rem; color: var(--seal); line-height: 1; }
+.quiz-result .qr-score small { color: var(--ink-soft); font-size: 0.38em; letter-spacing: 0.04em; }
+.quiz-result .qr-msg { font-family: var(--serif); font-size: 1.15rem; color: var(--ink); margin: 12px 0 4px; }
+.quiz-result .qr-msg-en { color: var(--ink-soft); font-size: 0.92rem; margin-bottom: 26px; }
+.quiz-result .qr-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.quiz-result .qr-actions .big-btn:last-child { background: var(--ink); }
+
+/* =====================================================================
+   什么是甲骨文 / What Are Oracle Bones? (story panels)
+   ===================================================================== */
+#view-about { max-width: 660px; margin: 0 auto; }
+.about-title {
+  text-align: center; font-family: var(--serif); font-weight: 600;
+  font-size: clamp(1.5rem, 5vw, 2.1rem); letter-spacing: 0.06em;
+  color: var(--ink); margin: 4px 0 30px;
+}
+.about-panels { display: flex; flex-direction: column; gap: 26px; }
+.about-panel {
+  display: flex; align-items: center; gap: 22px;
+  padding: 18px 20px; background: var(--paper-2);
+  border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-s);
+}
+.about-panel .ap-fig {
+  flex: none; width: 132px; height: 110px;
+  display: grid; place-items: center;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 10px;
+}
+.about-panel .ap-fig svg { width: 116px; height: auto; }
+.about-panel .ap-text { flex: 1; }
+.ap-title {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--serif); font-weight: 600; font-size: 1.12rem;
+  color: var(--ink); margin-bottom: 8px; letter-spacing: 0.03em;
+}
+.ap-num {
+  flex: none; width: 24px; height: 24px; display: grid; place-items: center;
+  font-family: var(--serif); font-size: 0.8rem; color: var(--paper-2);
+  background: var(--seal); border-radius: 50%;
+}
+.ap-body { font-size: 0.92rem; line-height: 1.7; color: var(--ink-soft); }
+
+/* 窄屏：插画在上、文字在下 / narrow screens: stack */
+@media (max-width: 560px) {
+  .about-panel { flex-direction: column; align-items: stretch; text-align: left; gap: 14px; }
+  .about-panel .ap-fig { width: 100%; height: 120px; }
+  .ap-title { justify-content: flex-start; }
+}
+
+.about-foot { text-align: center; margin-top: 30px; }
+
+@media (min-width: 768px) { .view { padding: 40px 28px 88px; } }
