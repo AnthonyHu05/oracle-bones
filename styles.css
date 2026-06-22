@@ -397,4 +397,36 @@ html, body {
 
 .about-foot { text-align: center; margin-top: 30px; }
 
+/* =====================================================================
+   甲骨文拼图 / Oracle jigsaw
+   ===================================================================== */
+#view-puzzle { max-width: 520px; margin: 0 auto; text-align: center; }
+.puzzle-prompt {
+  font-family: var(--serif); font-size: clamp(1.05rem, 3.4vw, 1.3rem);
+  color: var(--ink); margin: 6px 0 10px;
+}
+.puzzle-target {
+  font-family: var(--serif); font-size: 1.05rem; letter-spacing: 0.04em;
+  color: var(--ink-soft); margin-bottom: 6px;
+}
+.puzzle-board {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+  width: min(78vw, 320px); aspect-ratio: 1; margin: 14px auto;
+}
+.puzzle-tile {
+  aspect-ratio: 1; padding: 0; overflow: hidden; cursor: pointer;
+  background: var(--paper-2); border: 1px solid var(--line); border-radius: 8px;
+  transition: border-color .15s, box-shadow .15s, transform .1s;
+}
+.puzzle-tile svg { display: block; width: 100%; height: 100%; }
+.puzzle-tile:hover { border-color: var(--ink-soft); }
+.puzzle-tile.sel { border-color: var(--seal); box-shadow: inset 0 0 0 2px var(--seal); }
+.puzzle-tile:active { transform: scale(0.97); }
+/* 拼好后去掉缝隙与边框，露出完整字 / once solved, drop gaps & borders */
+.puzzle-board.solved { gap: 0; }
+.puzzle-board.solved .puzzle-tile { border-color: transparent; border-radius: 0; cursor: default; }
+.puzzle-feedback { min-height: 1.8em; margin: 8px auto 4px; }
+.puzzle-feedback .pz-line { font-family: var(--serif); color: var(--seal-deep); font-size: 1.05rem; }
+.puzzle-actions { display: flex; gap: 14px; justify-content: center; align-items: center; margin-top: 8px; }
+
 @media (min-width: 768px) { .view { padding: 40px 28px 88px; } }

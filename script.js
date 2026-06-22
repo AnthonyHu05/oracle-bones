@@ -41,6 +41,8 @@ const UI = {
   quiz_next: { zh: '下一题', en: 'Next' },
   about_title: { zh: '什么是甲骨文', en: 'What Are Oracle Bones?' },
   about_cta: { zh: '去玩「猜一猜」', en: 'Try the guessing game' },
+  puzzle_prompt: { zh: '点两块交换，把甲骨文拼好', en: 'Tap two pieces to swap and rebuild the glyph' },
+  puzzle_new: { zh: '换一个字', en: 'New character' },
 };
 
 /* =====================================================================
@@ -56,6 +58,10 @@ const SECTIONS = [
     title:{ zh:'猜一猜甲骨文', en:'Guess the Oracle' },
     desc:{ zh:'看一个古老的字形，猜猜它是今天的哪个字。',
            en:'See an ancient glyph — can you tell which character it is?' } },
+  { id:'puzzle', view:'puzzle', glyph:'拼',
+    title:{ zh:'甲骨文拼图', en:'Oracle Jigsaw' },
+    desc:{ zh:'甲骨文被打乱成小块，把它拼回原来的样子。',
+           en:'An oracle glyph is scrambled into tiles — put it back together.' } },
   { id:'about', view:'about', glyph:'龟',
     title:{ zh:'什么是甲骨文', en:'What Are Oracle Bones?' },
     desc:{ zh:'三千多年前，人们为什么把字刻在龟甲和兽骨上？',
@@ -452,6 +458,7 @@ const views = {
   detail: document.getElementById('view-detail'),
   quiz: document.getElementById('view-quiz'),
   about: document.getElementById('view-about'),
+  puzzle: document.getElementById('view-puzzle'),
 };
 function showView(name){ Object.values(views).forEach(v => v.classList.remove('active')); views[name].classList.add('active'); window.scrollTo(0,0); }
 
@@ -496,6 +503,7 @@ function buildSectionBoard(){
       card.addEventListener('click', () => {
         ensureAudio(); popSound();
         if(s.view === 'quiz') startQuiz();
+        else if(s.view === 'puzzle') startPuzzle();
         else if(s.view === 'about'){ buildAbout(); showView('about'); }
         else showView(s.view);
       });
@@ -844,6 +852,126 @@ function bindQuizEvents(){
 }
 
 /* =====================================================================
+   7c. 甲骨文拼图 / Oracle jigsaw
+   ---------------------------------------------------------------------
+   把一个字的甲骨文字形按 3×3 切成小块、打乱；点两块交换，拼回原样即过关。
+   Splits a character's oracle glyph into a 3×3 grid, scrambles it; tap two
+   tiles to swap. Complete the picture to win. Reuses the oracle stroke data.
+   ===================================================================== */
+const PZ_GRID = 3;  // 3×3 = 9 块 / tiles
+const pzEls = {
+  target: document.getElementById('puzzle-target'),
+  board: document.getElementById('puzzle-board'),
+  feedback: document.getElementById('puzzle-feedback'),
+  newBtn: document.getElementById('puzzle-new'),
+};
+let pzKey = null, pzArrange = [], pzSel = -1, pzFilled = [], pzViewBoxes = [], pzSolved = false;
+
+// 取一个字甲骨文所有笔画的采样点 / sample points of a character's oracle strokes
+function oraclePoints(c){
+  const pts = [];
+  c.oracle.forEach(d => splitSubpaths(d).forEach(sd => {
+    measurePath.setAttribute('d', sd);
+    const L = measurePath.getTotalLength() || 0.001;
+    const n = Math.max(6, Math.round(L / 3));
+    for(let i=0;i<=n;i++){ const p = measurePath.getPointAtLength(L*i/n); pts.push([p.x, p.y]); }
+  }));
+  return pts;
+}
+
+function startPuzzle(nextKey){
+  pzKey = nextKey || CHAR_ORDER[Math.floor(Math.random()*CHAR_ORDER.length)];
+  const c = CHARACTERS[pzKey];
+
+  // 求字形的正方外接框（留一点边）/ square bounding box of the glyph (with padding)
+  const pts = oraclePoints(c);
+  let minx=Infinity,miny=Infinity,maxx=-Infinity,maxy=-Infinity;
+  pts.forEach(p=>{ minx=Math.min(minx,p[0]); maxx=Math.max(maxx,p[0]); miny=Math.min(miny,p[1]); maxy=Math.max(maxy,p[1]); });
+  const cx=(minx+maxx)/2, cy=(miny+maxy)/2;
+  let side = Math.max(maxx-minx, maxy-miny) * 1.18; if(side < 10) side = 10;
+  const sx=cx-side/2, sy=cy-side/2, cell=side/PZ_GRID;
+
+  // 每块的取景框 + 是否有内容（空块可互换）/ per-tile viewBox + whether it has ink
+  pzViewBoxes = []; pzFilled = [];
+  for(let r=0;r<PZ_GRID;r++) for(let col=0;col<PZ_GRID;col++){
+    const vx=sx+col*cell, vy=sy+r*cell;
+    pzViewBoxes.push(`${vx.toFixed(2)} ${vy.toFixed(2)} ${cell.toFixed(2)} ${cell.toFixed(2)}`);
+    pzFilled.push(pts.some(p => p[0]>=vx && p[0]<vx+cell && p[1]>=vy && p[1]<vy+cell));
+  }
+
+  // 打乱（确保不是一上来就拼好的）/ scramble, but not already solved
+  do { pzArrange = shuffle([...Array(PZ_GRID*PZ_GRID).keys()]); } while(isPuzzleSolved(pzArrange));
+  pzSel = -1; pzSolved = false;
+
+  pzEls.target.textContent = (LANG==='zh' ? '拼出：' : 'Make: ') + c.char + ' · ' + c.pinyin;
+  pzEls.feedback.innerHTML = '';
+  pzEls.board.classList.remove('solved');
+  pzEls.newBtn.textContent = UI.puzzle_new[LANG];
+  renderPuzzle();
+  showView('puzzle');
+}
+
+// 一块的 SVG：把整字画出来，只用取景框露出该块区域 / one tile cropped to its region
+function tileSVG(tileIndex){
+  const c = CHARACTERS[pzKey];
+  const paths = c.oracle.map(d =>
+    `<path d="${d}" fill="none" stroke="${INK}" stroke-width="${c.strokeWidth||6.5}" stroke-linecap="round" stroke-linejoin="round"/>`
+  ).join('');
+  return `<svg viewBox="${pzViewBoxes[tileIndex]}" preserveAspectRatio="xMidYMid meet">${paths}</svg>`;
+}
+
+function renderPuzzle(){
+  pzEls.board.innerHTML = '';
+  pzArrange.forEach((tileIndex, slot) => {
+    const b = document.createElement('button');
+    b.className = 'puzzle-tile' + (slot===pzSel ? ' sel' : '');
+    b.innerHTML = tileSVG(tileIndex);
+    b.addEventListener('click', () => onTileTap(slot));
+    pzEls.board.appendChild(b);
+  });
+}
+
+function onTileTap(slot){
+  if(pzSolved) return;
+  ensureAudio();
+  if(pzSel === -1){ pzSel = slot; popSound(); renderPuzzle(); return; }
+  if(pzSel === slot){ pzSel = -1; renderPuzzle(); return; }
+  const a = pzArrange[pzSel], b = pzArrange[slot];
+  pzArrange[pzSel] = b; pzArrange[slot] = a;   // 交换 / swap
+  pzSel = -1; popSound();
+  renderPuzzle();
+  if(isPuzzleSolved(pzArrange)) onPuzzleSolved();
+}
+
+// 拼好判定：每块归位；两块都为空也算（视觉一致）/ solved when every tile is home (blank tiles interchangeable)
+function isPuzzleSolved(arr){
+  for(let i=0;i<arr.length;i++){
+    if(arr[i] === i) continue;
+    if(!pzFilled[i] && !pzFilled[arr[i]]) continue;
+    return false;
+  }
+  return true;
+}
+
+function onPuzzleSolved(){
+  pzSolved = true; pzSel = -1; dingSound();
+  renderPuzzle();
+  pzEls.board.classList.add('solved');   // 去掉缝隙，显示完整字 / remove gaps to show the whole glyph
+  const c = CHARACTERS[pzKey];
+  const zh = `拼好啦！这是“${c.char}”的甲骨文。`;
+  const en = `Solved! This is the oracle-bone form of “${c.char}”.`;
+  pzEls.feedback.innerHTML = `<span class="pz-line">${LANG==='zh'?zh:en}</span>`;
+}
+
+function bindPuzzleEvents(){
+  document.getElementById('puzzle-shuffle').addEventListener('click', () => {
+    ensureAudio(); popSound();
+    if(pzKey) startPuzzle(pzKey);   // 同一个字重新打乱 / reshuffle same character
+  });
+  pzEls.newBtn.addEventListener('click', () => { ensureAudio(); popSound(); startPuzzle(); });
+}
+
+/* =====================================================================
    8. 语言切换 / Language toggle
    ===================================================================== */
 function applyLang(){
@@ -867,6 +995,17 @@ function applyLang(){
     if(quizEls.result.hidden) showQuizQuestion(); else showQuizResult();
   }
   if(views.about.classList.contains('active')) buildAbout();
+  // 拼图进行中切换语言：只更新文字，不打乱进度 / refresh puzzle labels without reshuffling
+  if(views.puzzle.classList.contains('active') && pzKey){
+    const c = CHARACTERS[pzKey];
+    pzEls.target.textContent = (LANG==='zh' ? '拼出：' : 'Make: ') + c.char + ' · ' + c.pinyin;
+    pzEls.newBtn.textContent = UI.puzzle_new[LANG];
+    if(pzSolved){
+      const zh = `拼好啦！这是“${c.char}”的甲骨文。`;
+      const en = `Solved! This is the oracle-bone form of “${c.char}”.`;
+      pzEls.feedback.innerHTML = `<span class="pz-line">${LANG==='zh'?zh:en}</span>`;
+    }
+  }
 }
 function toggleLang(){ ensureAudio(); popSound(); LANG = LANG === 'zh' ? 'en' : 'zh'; applyLang(); }
 
@@ -879,6 +1018,7 @@ function init(){
   buildSectionBoard();
   bindDetailEvents();
   bindQuizEvents();
+  bindPuzzleEvents();
 
   document.querySelectorAll('.back-btn').forEach(btn => {
     btn.addEventListener('click', () => { ensureAudio(); popSound(); showView(btn.getAttribute('data-go')); });
