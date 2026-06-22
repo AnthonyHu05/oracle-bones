@@ -183,6 +183,23 @@
     </div>
   </section>
 
+  <!-- ============================================================
+       视图 7：查甲骨文字典（查字 + 字库 + 输入名字）/ View 7: Oracle dictionary
+       ============================================================ -->
+  <section id="view-dict" class="view">
+    <button class="back-btn" data-go="home">← <span data-i18n="back_home">回首页 Home</span></button>
+    <h2 class="dict-title" id="dict-title"></h2>
+    <div class="dict-search">
+      <input id="dict-input" class="dict-input" type="text" maxlength="16" autocomplete="off" />
+    </div>
+    <!-- 输入内容逐字显示的甲骨文 / oracle glyphs for the typed text -->
+    <div id="dict-result" class="dict-result"></div>
+    <!-- 字库 / the browsable library -->
+    <div id="dict-lib-head" class="dict-lib-head"></div>
+    <div id="dict-gallery" class="dict-gallery"></div>
+    <p id="dict-credit" class="dict-credit"></p>
+  </section>
+
   <!-- 隐藏的测量用 SVG（始终渲染，供形变引擎与拼图取点用）
        hidden measure SVG (always rendered) for path sampling -->
   <svg id="measure-svg" width="0" height="0" style="position:absolute;left:-9999px" aria-hidden="true">

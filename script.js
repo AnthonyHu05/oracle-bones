@@ -43,6 +43,9 @@ const UI = {
   about_cta: { zh: '去玩「猜一猜」', en: 'Try the guessing game' },
   puzzle_prompt: { zh: '点两块交换，把甲骨文拼好', en: 'Tap two pieces to swap and rebuild the glyph' },
   puzzle_new: { zh: '换一个字', en: 'New character' },
+  dict_title: { zh: '查甲骨文', en: 'Look It Up in Oracle Bone' },
+  dict_ph: { zh: '输入汉字（一个字、词，或你的名字）', en: 'Type Chinese characters (a word or your name)' },
+  dict_none: { zh: '暂无甲骨文', en: 'no oracle form' },
 };
 
 /* =====================================================================
@@ -62,6 +65,10 @@ const SECTIONS = [
     title:{ zh:'甲骨文拼图', en:'Oracle Jigsaw' },
     desc:{ zh:'甲骨文被打乱成小块，把它拼回原来的样子。',
            en:'An oracle glyph is scrambled into tiles — put it back together.' } },
+  { id:'dict', view:'dict', glyph:'查',
+    title:{ zh:'查甲骨文字典', en:'Oracle Dictionary' },
+    desc:{ zh:'输入一个字或你的名字，看看它的甲骨文；也能翻看整个字库。',
+           en:'Type a character or your name to see it in oracle bone — or browse the whole library.' } },
   { id:'about', view:'about', glyph:'龟',
     title:{ zh:'什么是甲骨文', en:'What Are Oracle Bones?' },
     desc:{ zh:'三千多年前，人们为什么把字刻在龟甲和兽骨上？',
@@ -459,6 +466,7 @@ const views = {
   quiz: document.getElementById('view-quiz'),
   about: document.getElementById('view-about'),
   puzzle: document.getElementById('view-puzzle'),
+  dict: document.getElementById('view-dict'),
 };
 function showView(name){ Object.values(views).forEach(v => v.classList.remove('active')); views[name].classList.add('active'); window.scrollTo(0,0); }
 
@@ -504,6 +512,7 @@ function buildSectionBoard(){
         ensureAudio(); popSound();
         if(s.view === 'quiz') startQuiz();
         else if(s.view === 'puzzle') startPuzzle();
+        else if(s.view === 'dict') startDict();
         else if(s.view === 'about'){ buildAbout(); showView('about'); }
         else showView(s.view);
       });
@@ -972,6 +981,91 @@ function bindPuzzleEvents(){
 }
 
 /* =====================================================================
+   7d. 查甲骨文字典 / Oracle dictionary（查字 + 字库 + 输入名字）
+   ---------------------------------------------------------------------
+   字形来自 oraclebone.org（Xiaoliang Wang，CC BY-NC 4.0），已下载到
+   assets/oracle/u{码点}.svg，索引在 assets/oracle-index.js（ORACLE_INDEX）。
+   输入任意汉字/名字 → 逐字显示甲骨文；库里没有的字如实标注「暂无甲骨文」。
+   Glyphs from oraclebone.org (CC BY-NC 4.0). Type any characters/name to see
+   them in oracle bone; characters not in the library are marked honestly.
+   ===================================================================== */
+const dictEls = {
+  title: document.getElementById('dict-title'),
+  input: document.getElementById('dict-input'),
+  result: document.getElementById('dict-result'),
+  libHead: document.getElementById('dict-lib-head'),
+  gallery: document.getElementById('dict-gallery'),
+  credit: document.getElementById('dict-credit'),
+};
+let ORACLE = null;       // { chars: { '日': {py, oracle:[...], sw}, ... } }
+let dictGalleryBuilt = false;
+
+// 字库直接复用本项目手绘的甲骨文（和演变/拼图/猜字同一套字）
+// the library reuses this project's hand-drawn oracle forms (same set as the other modules)
+function oracleData(){
+  if(!ORACLE){
+    ORACLE = { chars:{} };
+    CHAR_ORDER.forEach(k => {
+      const c = CHARACTERS[k];
+      ORACLE.chars[c.char] = { py:c.pinyin, oracle:c.oracle, sw:c.strokeWidth||6.5 };
+    });
+  }
+  return ORACLE;
+}
+// 内联画出一个字的甲骨文（描边中线）/ inline oracle glyph (centre-line strokes)
+function oracleSvg(e){
+  const paths = e.oracle.map(d =>
+    `<path d="${d}" fill="none" stroke="${INK}" stroke-width="${e.sw}" stroke-linecap="round" stroke-linejoin="round"/>`
+  ).join('');
+  return `<svg viewBox="0 0 100 100">${paths}</svg>`;
+}
+// 一个字的小卡（有则显示字形，无则如实标注）/ one tile (glyph, or honest "no form")
+function oracleTile(ch, big){
+  const e = oracleData().chars[ch];
+  const cls = 'ot' + (big ? ' big' : '') + (e ? '' : ' missing');
+  if(e) return `<div class="${cls}">${oracleSvg(e)}<span class="ot-cap">${ch} · ${e.py}</span></div>`;
+  return `<div class="${cls}"><span class="ot-x">□</span><span class="ot-cap">${ch} · ${UI.dict_none[LANG]}</span></div>`;
+}
+function renderDictResult(){
+  const s = (dictEls.input.value || '').trim();
+  const chars = [...s].filter(c => /[㐀-鿿]/.test(c));   // 只看汉字 / CJK only
+  dictEls.result.innerHTML = chars.map(c => oracleTile(c, true)).join('');
+}
+function buildGallery(){
+  if(dictGalleryBuilt) return;
+  const chars = oracleData().chars;
+  dictEls.gallery.innerHTML = Object.keys(chars).map(ch =>
+    `<button class="gal-item" data-ch="${ch}">${oracleSvg(chars[ch])}<span>${ch}</span></button>`
+  ).join('');
+  dictGalleryBuilt = true;
+}
+function refreshDictText(){
+  const n = Object.keys(oracleData().chars).length;
+  dictEls.title.textContent = UI.dict_title[LANG];
+  dictEls.input.placeholder = UI.dict_ph[LANG];
+  dictEls.libHead.textContent = (LANG==='zh' ? `字库 · 共 ${n} 个字（会随新增汉字一起变多）` : `Library · ${n} characters (grows as more are added)`);
+  dictEls.credit.innerHTML = (LANG==='zh' ? '字形为本项目手绘，与其他板块共用同一套字。'
+                                          : 'Glyphs hand-drawn for this project, shared across all sections.');
+}
+function startDict(){
+  refreshDictText();
+  buildGallery();
+  renderDictResult();
+  showView('dict');
+}
+function bindDictEvents(){
+  dictEls.input.addEventListener('input', () => { ensureAudio(); renderDictResult(); });
+  // 点字库里的字 → 填进输入框看大图 / click a library item -> show it
+  dictEls.gallery.addEventListener('click', e => {
+    const btn = e.target.closest('.gal-item'); if(!btn) return;
+    ensureAudio(); popSound();
+    dictEls.input.value = btn.getAttribute('data-ch');
+    renderDictResult();
+    dictEls.result.scrollIntoView({ block:'nearest', behavior:'smooth' });
+  });
+}
+
+/* =====================================================================
    8. 语言切换 / Language toggle
    ===================================================================== */
 function applyLang(){
@@ -995,6 +1089,7 @@ function applyLang(){
     if(quizEls.result.hidden) showQuizQuestion(); else showQuizResult();
   }
   if(views.about.classList.contains('active')) buildAbout();
+  if(views.dict.classList.contains('active')){ refreshDictText(); renderDictResult(); }
   // 拼图进行中切换语言：只更新文字，不打乱进度 / refresh puzzle labels without reshuffling
   if(views.puzzle.classList.contains('active') && pzKey){
     const c = CHARACTERS[pzKey];
@@ -1019,6 +1114,7 @@ function init(){
   bindDetailEvents();
   bindQuizEvents();
   bindPuzzleEvents();
+  bindDictEvents();
 
   document.querySelectorAll('.back-btn').forEach(btn => {
     btn.addEventListener('click', () => { ensureAudio(); popSound(); showView(btn.getAttribute('data-go')); });
