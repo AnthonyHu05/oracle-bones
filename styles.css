@@ -459,6 +459,8 @@ html, body {
 }
 .ot img, .ot svg { display: block; width: 64px; height: 64px; }
 .ot.big img, .ot.big svg { width: 110px; height: 110px; }
+/* JPG 字形是黑字白底：用 multiply 让白底融进卡片 / blend white JPG bg into the card */
+.ob-img { mix-blend-mode: multiply; }
 .ot-cap { font-size: 0.78rem; color: var(--ink-soft); letter-spacing: 0.02em; }
 .ot.missing { border-style: dashed; }
 .ot .ot-x { font-size: 3rem; color: var(--line); line-height: 1; }

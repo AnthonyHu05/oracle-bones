@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg width="100" height="100" version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Xiaoliang Wang</dc:title>
+     </cc:Agent>
+    </dc:creator>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc/4.0/"/>
+   </cc:Work>
+   <cc:License rdf:about="http://creativecommons.org/licenses/by-nc/4.0/">
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>
+    <cc:prohibits rdf:resource="http://creativecommons.org/ns#CommercialUse"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+   </cc:License>
+  </rdf:RDF>
+ </metadata>
+ <g>
+  <path d="m24.393 15.723c-0.80824 0.52992-1.0549 1.7625-0.69364 2.659 10.825 26.86 0.02826 51.073-7.2832 66.474-0.3179 0.66962 0.55123 1.4212 1.1561 1.8497 0.63591 0.45053 2.06-0.0066 2.4277-0.69364 13.104-24.481 15.11-47.692 7.2832-69.827-0.37257-1.0536-1.9556-1.0752-2.8902-0.46243z"/>
+  <path d="m68.902 12.601c-1.4862-0.29481-2.6749 0.71792-3.0058 2.1965-6.1706 27.571-5.1287 54.506 14.913 73.988 0.77419 0.75257 1.993 0.83185 2.8902 0.23121 0.77385-0.51806 1.4142-1.9509 0.80925-2.659-8.6143-10.082-24.814-28.386-14.104-70.751 0.22844-0.90363-0.58865-2.8244-1.5029-3.0058z"/>
+ </g>
+</svg>

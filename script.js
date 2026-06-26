@@ -997,33 +997,35 @@ const dictEls = {
   gallery: document.getElementById('dict-gallery'),
   credit: document.getElementById('dict-credit'),
 };
-let ORACLE = null;       // { chars: { '日': {py, oracle:[...], sw}, ... } }
+let ORACLE = null;       // { chars: { '安': {py,cp,e}, ... } } 来自 oracle-index.js
 let dictGalleryBuilt = false;
 
-// 字库直接复用本项目手绘的甲骨文（和演变/拼图/猜字同一套字）
-// the library reuses this project's hand-drawn oracle forms (same set as the other modules)
+// 字库优先用下载好的字形库（oracle-index.js，数百字）；缺失时回退到本项目手绘的几个字
+// prefer the downloaded library (oracle-index.js, hundreds of chars); fall back to our hand-drawn set
 function oracleData(){
   if(!ORACLE){
     ORACLE = { chars:{} };
+    // 1) 下载好的字库（数百字，图片）/ the downloaded library (hundreds, images)
+    if(typeof ORACLE_INDEX !== 'undefined' && ORACLE_INDEX.chars) Object.assign(ORACLE.chars, ORACLE_INDEX.chars);
+    // 2) 本项目手绘的字补缺（字库里没有的，用我们自己的）/ our hand-drawn forms fill any gaps
     CHAR_ORDER.forEach(k => {
       const c = CHARACTERS[k];
-      ORACLE.chars[c.char] = { py:c.pinyin, oracle:c.oracle, sw:c.strokeWidth||6.5 };
+      if(!ORACLE.chars[c.char]) ORACLE.chars[c.char] = { py:c.pinyin, oracle:c.oracle, sw:c.strokeWidth||6.5 };
     });
   }
   return ORACLE;
 }
-// 内联画出一个字的甲骨文（描边中线）/ inline oracle glyph (centre-line strokes)
-function oracleSvg(e){
-  const paths = e.oracle.map(d =>
-    `<path d="${d}" fill="none" stroke="${INK}" stroke-width="${e.sw}" stroke-linecap="round" stroke-linejoin="round"/>`
-  ).join('');
+// 画一个字的甲骨文：库里的用图片，回退的用内联描边 / image for library chars, inline for fallback
+function glyphHTML(e){
+  if(e.cp && e.e) return `<img loading="lazy" class="ob-img" src="assets/oracle/u${e.cp}.${e.e}" alt="">`;
+  const paths = e.oracle.map(d => `<path d="${d}" fill="none" stroke="${INK}" stroke-width="${e.sw}" stroke-linecap="round" stroke-linejoin="round"/>`).join('');
   return `<svg viewBox="0 0 100 100">${paths}</svg>`;
 }
 // 一个字的小卡（有则显示字形，无则如实标注）/ one tile (glyph, or honest "no form")
 function oracleTile(ch, big){
   const e = oracleData().chars[ch];
   const cls = 'ot' + (big ? ' big' : '') + (e ? '' : ' missing');
-  if(e) return `<div class="${cls}">${oracleSvg(e)}<span class="ot-cap">${ch} · ${e.py}</span></div>`;
+  if(e) return `<div class="${cls}">${glyphHTML(e)}<span class="ot-cap">${ch}${e.py?' · '+e.py:''}</span></div>`;
   return `<div class="${cls}"><span class="ot-x">□</span><span class="ot-cap">${ch} · ${UI.dict_none[LANG]}</span></div>`;
 }
 function renderDictResult(){
@@ -1035,7 +1037,7 @@ function buildGallery(){
   if(dictGalleryBuilt) return;
   const chars = oracleData().chars;
   dictEls.gallery.innerHTML = Object.keys(chars).map(ch =>
-    `<button class="gal-item" data-ch="${ch}">${oracleSvg(chars[ch])}<span>${ch}</span></button>`
+    `<button class="gal-item" data-ch="${ch}">${glyphHTML(chars[ch])}<span>${ch}</span></button>`
   ).join('');
   dictGalleryBuilt = true;
 }
@@ -1043,9 +1045,9 @@ function refreshDictText(){
   const n = Object.keys(oracleData().chars).length;
   dictEls.title.textContent = UI.dict_title[LANG];
   dictEls.input.placeholder = UI.dict_ph[LANG];
-  dictEls.libHead.textContent = (LANG==='zh' ? `字库 · 共 ${n} 个字（会随新增汉字一起变多）` : `Library · ${n} characters (grows as more are added)`);
-  dictEls.credit.innerHTML = (LANG==='zh' ? '字形为本项目手绘，与其他板块共用同一套字。'
-                                          : 'Glyphs hand-drawn for this project, shared across all sections.');
+  dictEls.libHead.textContent = (LANG==='zh' ? `字库 · 共 ${n} 个字` : `Library · ${n} characters`);
+  dictEls.credit.innerHTML = (LANG==='zh' ? '字形来源：' : 'Glyphs: ')
+    + '<a href="https://oraclebone.org" target="_blank" rel="noopener">oraclebone.org</a> · Xiaoliang Wang · CC BY-NC 4.0';
 }
 function startDict(){
   refreshDictText();
