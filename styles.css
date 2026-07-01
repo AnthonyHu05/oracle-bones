@@ -9,19 +9,20 @@
    ===================================================================== */
 
 :root {
-  /* 青铜 · 铜绿 + 素牙白 / bronze & celadon palette */
-  --paper:    #EAECE6;   /* 素牙白（展墙）/ cool ivory wall */
-  --paper-2:  #F5F6F1;   /* 卡片白 / card white */
-  --paper-3:  #DEE2DA;   /* 浅青灰 / soft section fill */
-  --ink:      #20251F;   /* 墨 / cool ink */
-  --ink-soft: #5C625A;   /* 次要文字 / secondary text */
-  --line:     rgba(32,37,31,0.16);  /* 细线 / hairline */
-  --seal:     #2F6E63;   /* 铜绿（印章/点缀）/ patina-bronze teal */
-  --seal-deep:#245349;
-  --gold:     #B7892F;   /* 暖金（答对/火苗等暖点缀）/ warm gold accent */
-  --radius:   12px;
-  --shadow-s: 0 1px 2px rgba(32,37,31,0.06);
-  --shadow-m: 0 2px 12px rgba(32,37,31,0.07);
+  /* 兽骨质感 · 暖牙白 + 朱红 + 暖金 / oracle-bone palette: warm bone, cinnabar, gold */
+  --paper:    #E9DFC8;   /* 兽骨底 / bone base */
+  --paper-2:  #F4EEDD;   /* 打磨过的骨白（卡片）/ polished bone (cards) */
+  --paper-3:  #DBCDAD;   /* 深一点的骨黄 / deeper bone */
+  --ink:      #33291D;   /* 焦褐墨 / warm ink brown */
+  --ink-soft: #7A6A54;   /* 次要文字 / secondary text */
+  --line:     rgba(51,41,29,0.18);  /* 细线 / hairline */
+  --seal:     #C4472E;   /* 朱红（印章/主点缀）/ cinnabar seal red */
+  --seal-deep:#A5391F;
+  --gold:     #C89438;   /* 暖金（奖励/高亮）/ warm gold */
+  --ok:       #C89438;   /* 答对高亮 = 暖金 / "correct" = gold */
+  --radius:   14px;
+  --shadow-s: 0 1px 2px rgba(51,41,29,0.08);
+  --shadow-m: 0 3px 14px rgba(51,41,29,0.10);
   --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong",
            "SimSun", Georgia, "Times New Roman", serif;
   --sans:  "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
@@ -36,11 +37,37 @@ html, body {
   height: 100%;
   font-family: var(--sans);
   color: var(--ink);
-  background: var(--paper);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   overflow-x: hidden;
+}
+/* 兽骨纹理：斑驳色块 + 细微裂纹噪点 / bone texture: mottled patches + faint noise */
+body {
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(ellipse at 18% 12%, rgba(255,250,235,0.55) 0%, transparent 42%),
+    radial-gradient(ellipse at 82% 20%, rgba(210,190,150,0.35) 0%, transparent 46%),
+    radial-gradient(ellipse at 40% 88%, rgba(198,175,135,0.30) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 80%, rgba(255,250,238,0.35) 0%, transparent 45%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+}
+
+/* =====================================================================
+   互动特效层：彩带画布 + 气泡容器 / FX layer: confetti canvas + bubbles
+   ===================================================================== */
+#fx-canvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 900; }
+#bubble-layer { position: fixed; inset: 0; pointer-events: none; z-index: 890; overflow: hidden; }
+.bubble {
+  position: fixed; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle at 32% 30%, rgba(255,255,255,0.9), rgba(200,148,56,0.45) 60%, rgba(196,71,46,0.15));
+  animation: bubbleUp var(--bt, 900ms) cubic-bezier(.2,.7,.3,1) forwards;
+}
+@keyframes bubbleUp {
+  0%   { transform: translateY(0) scale(0.3); opacity: 0; }
+  20%  { opacity: 0.9; }
+  100% { transform: translateY(var(--by, -90px)) translateX(var(--bx, 0)) scale(1); opacity: 0; }
 }
 
 /* =====================================================================
@@ -277,17 +304,23 @@ html, body {
   width: min(92vw, 460px); margin: 4px auto 0; text-align: left;
 }
 .section-card {
+  position: relative; overflow: hidden;
   display: flex; align-items: center; gap: 16px; text-align: left;
   padding: 16px 18px; background: var(--paper-2);
-  border: 1px solid var(--line); border-radius: var(--radius);
+  border: 1.5px solid var(--line); border-radius: 18px;
   box-shadow: var(--shadow-s); cursor: pointer; font-family: var(--sans);
-  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  transition: transform .16s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease, border-color .18s ease, background .18s ease;
 }
-.section-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-m); border-color: var(--ink-soft); }
+.section-card:hover { transform: translateY(-3px) scale(1.015); box-shadow: var(--shadow-m); border-color: var(--seal); background: #FBF6E8; }
+.section-card:hover .sc-glyph { background: var(--seal); color: #FBF3E2; transform: rotate(-4deg) scale(1.06); }
+.section-card:active { transform: translateY(-1px) scale(0.99); }
+.section-card.pressed { animation: cardPop .32s ease; }
+@keyframes cardPop { 0%,100%{ transform: translateY(-3px) scale(1.015);} 40%{ transform: translateY(-5px) scale(1.06);} }
 .section-card .sc-glyph {
-  flex: none; width: 52px; height: 52px; display: grid; place-items: center;
-  font-family: var(--serif); font-size: 1.8rem; color: var(--seal);
-  background: var(--paper-3); border-radius: 10px;
+  flex: none; width: 54px; height: 54px; display: grid; place-items: center;
+  font-family: var(--serif); font-size: 1.85rem; color: var(--seal);
+  background: var(--paper-3); border-radius: 14px;
+  transition: background .18s ease, color .18s ease, transform .18s cubic-bezier(.34,1.56,.64,1);
 }
 .section-card .sc-text { display: flex; flex-direction: column; gap: 3px; }
 .section-card .sc-title { font-family: var(--serif); font-size: 1.04rem; letter-spacing: 0.03em; color: var(--ink); }
@@ -310,17 +343,45 @@ html, body {
   max-width: 440px; margin: 0 auto 4px;
   font-size: 0.8rem; letter-spacing: 0.04em; color: var(--ink-soft);
 }
-.quiz-score { color: var(--seal-deep); }
+.quiz-score { color: var(--seal-deep); font-weight: 600; }
+/* 血条 / hearts (HP) */
+.quiz-hearts { display: inline-flex; gap: 3px; }
+.quiz-hearts .heart { color: var(--seal); font-size: 1.15rem; line-height: 1; transition: color .3s ease, transform .3s ease; }
+.quiz-hearts .heart.lost { color: rgba(51,41,29,0.18); transform: scale(0.8); }
 .quiz-prompt {
   font-family: var(--serif); font-size: clamp(1.1rem, 3.6vw, 1.4rem);
   color: var(--ink); margin: 8px 0 16px;
 }
 .quiz-stage {
+  position: relative;
   width: min(64vw, 240px); margin: 0 auto 20px; padding: 10px;
   background: var(--paper-2); border: 1px solid var(--line);
   border-radius: var(--radius); box-shadow: var(--shadow-m);
 }
 #quiz-svg { display: block; width: 100%; height: auto; }
+/* 裂纹（答对时画出）/ crack drawn on a correct answer */
+.quiz-crack { stroke-dasharray: 260; stroke-dashoffset: 260; opacity: 0; }
+.quiz-crack.cracking { animation: crackDraw .5s ease forwards; }
+@keyframes crackDraw { 0%{opacity:0;stroke-dashoffset:260;} 12%{opacity:1;} 100%{opacity:0.9;stroke-dashoffset:0;} }
+/* 答对：字形迸开一下 / correct: glyph pops */
+#quiz-stage.burst #quiz-svg { animation: qBurst .55s ease; }
+@keyframes qBurst { 0%{transform:scale(1);} 28%{transform:scale(1.12) rotate(-2deg);} 60%{transform:scale(0.98) rotate(1deg);} 100%{transform:scale(1);} }
+/* 答错：抖动 + 变红 / wrong: shake + flash red */
+#quiz-stage.shake { animation: qShake .45s ease; }
+@keyframes qShake { 0%,100%{transform:translateX(0);} 15%{transform:translateX(-9px) rotate(-1.5deg);} 35%{transform:translateX(9px) rotate(1.5deg);} 55%{transform:translateX(-7px);} 75%{transform:translateX(7px);} }
+#quiz-stage.shake #quiz-glyph path { stroke: var(--seal); }
+/* 飘分 / floating points */
+.quiz-plus {
+  position: absolute; left: 50%; top: 26%; transform: translate(-50%, 0);
+  font-family: var(--serif); font-weight: 700; font-size: 1.5rem; color: var(--gold);
+  opacity: 0; pointer-events: none; white-space: nowrap; text-shadow: 0 1px 2px rgba(0,0,0,0.12);
+}
+.quiz-plus.show { animation: plusUp 1s ease forwards; }
+@keyframes plusUp {
+  0%{opacity:0; transform:translate(-50%,12px) scale(.6);}
+  22%{opacity:1; transform:translate(-50%,-4px) scale(1.1);}
+  100%{opacity:0; transform:translate(-50%,-46px) scale(1);}
+}
 .quiz-options {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
   max-width: 440px; margin: 0 auto;
@@ -363,37 +424,53 @@ html, body {
   font-size: clamp(1.5rem, 5vw, 2.1rem); letter-spacing: 0.06em;
   color: var(--ink); margin: 4px 0 30px;
 }
-.about-panels { display: flex; flex-direction: column; gap: 26px; }
-.about-panel {
-  display: flex; align-items: center; gap: 22px;
-  padding: 18px 20px; background: var(--paper-2);
-  border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-s);
+/* 一步一屏 / one step at a time */
+.about-stage { min-height: 360px; display: flex; justify-content: center; overflow: hidden; }
+.about-step {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: 18px; max-width: 460px; width: 100%;
 }
-.about-panel .ap-fig {
-  flex: none; width: 132px; height: 110px;
-  display: grid; place-items: center;
-  background: var(--paper); border: 1px solid var(--line); border-radius: 10px;
+.about-step.entering { animation: abEnter .5s cubic-bezier(.2,.7,.3,1) both; }
+@keyframes abEnter { 0%{opacity:0; transform:translateY(-30px) scale(.95);} 100%{opacity:1; transform:none;} }
+.about-step.falling { animation: abFall .58s ease-in forwards; }
+@keyframes abFall { 0%{opacity:1; transform:none;} 100%{opacity:0; transform:translateY(72vh) rotate(15deg);} }
+
+.ab-fig {
+  position: relative; width: min(74vw, 264px); aspect-ratio: 6/5;
+  display: grid; place-items: center; cursor: pointer; padding: 0;
+  background: var(--paper-2); border: 1.5px solid var(--line); border-radius: 22px;
+  box-shadow: var(--shadow-m);
+  transition: transform .16s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease, border-color .18s ease;
 }
-.about-panel .ap-fig svg { width: 116px; height: auto; }
-.about-panel .ap-text { flex: 1; }
-.ap-title {
-  display: flex; align-items: center; gap: 10px;
-  font-family: var(--serif); font-weight: 600; font-size: 1.12rem;
-  color: var(--ink); margin-bottom: 8px; letter-spacing: 0.03em;
-}
+.ab-fig:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 22px rgba(51,41,29,0.15); border-color: var(--seal); }
+.ab-fig:active { transform: scale(0.98); }
+.ab-fig > svg { width: 78%; height: auto; }
+/* 裂纹覆盖层（点一下画出）/ crack overlay drawn on tap */
+.ab-crack { position: absolute; inset: 8%; display: block; pointer-events: none; }
+.ab-crack svg { width: 100%; height: 100%; }
+.ab-crack path { stroke-dasharray: 260; stroke-dashoffset: 260; opacity: 0; }
+.ab-fig.cracking .ab-crack path { animation: crackDraw .28s ease forwards; }
+.ab-fig.cracking { animation: abShiver .28s ease; }
+@keyframes abShiver { 0%,100%{transform:none;} 33%{transform:translateX(-3px) rotate(-1deg);} 66%{transform:translateX(3px) rotate(1deg);} }
+
+.ab-title { display: flex; align-items: center; justify-content: center; gap: 10px;
+  font-family: var(--serif); font-weight: 600; font-size: 1.22rem; color: var(--ink); letter-spacing: 0.03em; }
 .ap-num {
-  flex: none; width: 24px; height: 24px; display: grid; place-items: center;
-  font-family: var(--serif); font-size: 0.8rem; color: var(--paper-2);
+  flex: none; width: 26px; height: 26px; display: grid; place-items: center;
+  font-family: var(--serif); font-size: 0.82rem; color: var(--paper-2);
   background: var(--seal); border-radius: 50%;
 }
-.ap-body { font-size: 0.92rem; line-height: 1.7; color: var(--ink-soft); }
+.ab-body { font-size: 0.98rem; line-height: 1.75; color: var(--ink-soft); max-width: 30em; }
 
-/* 窄屏：插画在上、文字在下 / narrow screens: stack */
-@media (max-width: 560px) {
-  .about-panel { flex-direction: column; align-items: stretch; text-align: left; gap: 14px; }
-  .about-panel .ap-fig { width: 100%; height: 120px; }
-  .ap-title { justify-content: flex-start; }
-}
+/* 进度点 / progress dots */
+.about-dots { display: flex; justify-content: center; gap: 9px; margin: 22px 0 8px; }
+.ab-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--paper-3);
+  border: 1px solid var(--line); transition: background .25s, transform .25s, opacity .25s; }
+.ab-dot.done { background: var(--seal); opacity: 0.45; }
+.ab-dot.on { background: var(--seal); transform: scale(1.4); }
+.about-hint { text-align: center; font-size: 0.82rem; color: var(--ink-soft);
+  animation: hintPulse 1.7s ease-in-out infinite; }
+@keyframes hintPulse { 0%,100%{opacity:0.45;} 50%{opacity:0.9;} }
 
 .about-foot { text-align: center; margin-top: 30px; }
 

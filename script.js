@@ -82,8 +82,8 @@ const SECTIONS = [
    ===================================================================== */
 const ABOUT = [
   { svg:`<svg viewBox="0 0 120 100">
-      <path d="M22 34 Q17 18 37 21 L84 25 Q104 27 99 47 L96 69 Q94 86 73 82 L31 78 Q13 76 18 56 Z" fill="#DEE2DA" stroke="#20251F" stroke-width="2"/>
-      <g stroke="#20251F" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 34 Q17 18 37 21 L84 25 Q104 27 99 47 L96 69 Q94 86 73 82 L31 78 Q13 76 18 56 Z" fill="#DBCDAD" stroke="#33291D" stroke-width="2"/>
+      <g stroke="#33291D" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <ellipse cx="44" cy="50" rx="9" ry="12"/><line x1="37" y1="50" x2="51" y2="50"/>
         <path d="M74 36 q-11 6 -11 18 q0 12 11 18 q-6 -8 -6 -18 q0 -10 6 -18"/>
       </g></svg>`,
@@ -92,39 +92,39 @@ const ABOUT = [
            en:'Oracle-bone script is the oldest known mature writing in China, from the Shang dynasty over 3,000 years ago.' } },
 
   { svg:`<svg viewBox="0 0 120 100">
-      <ellipse cx="40" cy="50" rx="25" ry="33" fill="#DEE2DA" stroke="#20251F" stroke-width="2"/>
-      <line x1="40" y1="19" x2="40" y2="81" stroke="#20251F" stroke-width="1.4"/>
-      <line x1="21" y1="40" x2="59" y2="40" stroke="#20251F" stroke-width="1.4"/>
-      <line x1="19" y1="60" x2="61" y2="60" stroke="#20251F" stroke-width="1.4"/>
-      <path d="M86 26 Q108 25 104 53 Q101 77 85 78 Q92 60 89 46 Q87 35 86 26 Z" fill="#DEE2DA" stroke="#20251F" stroke-width="2"/>
-      <path d="M85 78 q-3 10 -8 14" stroke="#20251F" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
+      <ellipse cx="40" cy="50" rx="25" ry="33" fill="#DBCDAD" stroke="#33291D" stroke-width="2"/>
+      <line x1="40" y1="19" x2="40" y2="81" stroke="#33291D" stroke-width="1.4"/>
+      <line x1="21" y1="40" x2="59" y2="40" stroke="#33291D" stroke-width="1.4"/>
+      <line x1="19" y1="60" x2="61" y2="60" stroke="#33291D" stroke-width="1.4"/>
+      <path d="M86 26 Q108 25 104 53 Q101 77 85 78 Q92 60 89 46 Q87 35 86 26 Z" fill="#DBCDAD" stroke="#33291D" stroke-width="2"/>
+      <path d="M85 78 q-3 10 -8 14" stroke="#33291D" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
     title:{ zh:'刻在龟甲和兽骨上', en:'Carved on shells and bones' },
     body:{ zh:'那时还没有纸。人们把字刻在乌龟的腹甲和牛的肩胛骨上，所以叫“甲骨文”。',
            en:'There was no paper yet, so people carved characters onto turtle shells and ox shoulder-bones — hence the name “shell-and-bone script”.' } },
 
   { svg:`<svg viewBox="0 0 120 100">
-      <ellipse cx="47" cy="52" rx="29" ry="33" fill="#DEE2DA" stroke="#20251F" stroke-width="2"/>
-      <path d="M47 28 L47 76 M47 50 L65 60" stroke="#20251F" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-      <path d="M37 40 L47 50 M39 66 L47 57" stroke="#20251F" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <path d="M95 80 q-9 -10 -3 -22 q3 8 9 6 q-3 9 4 13 q-3 8 -10 3 Z" fill="#B7892F"/></svg>`,
+      <ellipse cx="47" cy="52" rx="29" ry="33" fill="#DBCDAD" stroke="#33291D" stroke-width="2"/>
+      <path d="M47 28 L47 76 M47 50 L65 60" stroke="#33291D" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+      <path d="M37 40 L47 50 M39 66 L47 57" stroke="#33291D" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M95 80 q-9 -10 -3 -22 q3 8 9 6 q-3 9 4 13 q-3 8 -10 3 Z" fill="#C89438"/></svg>`,
     title:{ zh:'古人用它来占卜', en:'Used to ask questions' },
     body:{ zh:'遇到大事，商朝人会先问祖先和神灵：在甲骨上钻孔、用火烧，看裂开的纹路判断吉凶，再把问题和结果刻下来。',
            en:'Before big decisions, the Shang asked their ancestors and gods — they heated the bones until they cracked, read the cracks for an answer, then carved the question and outcome.' } },
 
   { svg:`<svg viewBox="0 0 120 100">
-      <path d="M20 38 Q16 24 34 26 L70 30 Q88 32 84 50 L82 67 Q80 82 63 78 L33 74 Q17 72 19 56 Z" fill="#DEE2DA" stroke="#20251F" stroke-width="2"/>
-      <g stroke="#20251F" stroke-width="2" fill="none" stroke-linecap="round"><ellipse cx="43" cy="51" rx="7" ry="9"/><line x1="38" y1="51" x2="48" y2="51"/></g>
-      <circle cx="82" cy="60" r="17" fill="rgba(47,110,99,0.10)" stroke="#20251F" stroke-width="2.6"/>
-      <line x1="94" y1="72" x2="105" y2="84" stroke="#20251F" stroke-width="4" stroke-linecap="round"/></svg>`,
+      <path d="M20 38 Q16 24 34 26 L70 30 Q88 32 84 50 L82 67 Q80 82 63 78 L33 74 Q17 72 19 56 Z" fill="#DBCDAD" stroke="#33291D" stroke-width="2"/>
+      <g stroke="#33291D" stroke-width="2" fill="none" stroke-linecap="round"><ellipse cx="43" cy="51" rx="7" ry="9"/><line x1="38" y1="51" x2="48" y2="51"/></g>
+      <circle cx="82" cy="60" r="17" fill="rgba(196,71,46,0.12)" stroke="#33291D" stroke-width="2.6"/>
+      <line x1="94" y1="72" x2="105" y2="84" stroke="#33291D" stroke-width="4" stroke-linecap="round"/></svg>`,
     title:{ zh:'它怎样重见天日', en:'How it was found again' },
     body:{ zh:'甲骨在地下埋了三千年。1899 年，学者王懿荣在中药“龙骨”上认出了古老的刻字，甲骨文才被重新发现。',
            en:'The bones lay buried for 3,000 years. In 1899 the scholar Wang Yirong recognised ancient carvings on “dragon bones” sold as medicine — and oracle-bone script was rediscovered.' } },
 
   { svg:`<svg viewBox="0 0 120 100">
-      <g stroke="#20251F" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <g stroke="#33291D" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <ellipse cx="28" cy="50" rx="14" ry="17"/><line x1="20" y1="50" x2="36" y2="50"/></g>
-      <path d="M50 50 L72 50 M66 44 L72 50 L66 56" stroke="#2F6E63" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      <text x="96" y="51" font-family="Noto Serif SC, Songti SC, serif" font-size="40" fill="#20251F" text-anchor="middle" dominant-baseline="central">日</text></svg>`,
+      <path d="M50 50 L72 50 M66 44 L72 50 L66 56" stroke="#C4472E" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="96" y="51" font-family="Noto Serif SC, Songti SC, serif" font-size="40" fill="#33291D" text-anchor="middle" dominant-baseline="central">日</text></svg>`,
     title:{ zh:'为什么重要', en:'Why it matters' },
     body:{ zh:'甲骨文让我们知道古人怎样生活、怎样思考，它也是今天汉字的祖先——你写的每个字，都从这里走来。',
            en:'Oracle bones tell us how ancient people lived and thought. They are also the ancestor of today’s characters — every character you write began here.' } },
@@ -138,7 +138,7 @@ const STAGE_NAMES = [
   { zh: '楷书', en: 'Regular Script' },
 ];
 
-const INK = '#20251F'; // 墨 / ink
+const INK = '#33291D'; // 墨 / ink
 
 /* =====================================================================
    2. 汉字数据 / Character data
@@ -455,6 +455,64 @@ function playTone(freq, dur, type){
 function popSound(){ playTone(520, 0.12, 'triangle'); }
 function morphSound(){ playTone(380, 0.18, 'sine'); setTimeout(()=>playTone(620,0.16,'sine'),90); }
 function dingSound(){ playTone(880, 0.25, 'sine'); }
+function cheerSound(){ playTone(660,0.12,'triangle'); setTimeout(()=>playTone(880,0.12,'triangle'),90); setTimeout(()=>playTone(1180,0.2,'triangle'),180); }
+function buzzSound(){ playTone(200,0.18,'sawtooth'); setTimeout(()=>playTone(150,0.22,'sawtooth'),110); }
+
+/* =====================================================================
+   4b. 互动特效 / FX: 气泡 bubbles + 彩带 confetti
+   ===================================================================== */
+function centerOf(el){ const r=el.getBoundingClientRect(); return { x:r.left+r.width/2, y:r.top+r.height/2 }; }
+
+// 触碰冒气泡 / bubbles rising from a tap point
+function bubbleBurst(x, y, color){
+  const layer = document.getElementById('bubble-layer'); if(!layer) return;
+  const n = 6 + Math.floor(Math.random()*4);
+  for(let i=0;i<n;i++){
+    const b = document.createElement('span'); b.className = 'bubble';
+    const size = 8 + Math.random()*18;
+    b.style.left = (x - size/2) + 'px'; b.style.top = (y - size/2) + 'px';
+    b.style.width = size+'px'; b.style.height = size+'px';
+    b.style.setProperty('--by', (-55 - Math.random()*95) + 'px');
+    b.style.setProperty('--bx', ((Math.random()-0.5)*70) + 'px');
+    b.style.setProperty('--bt', (700 + Math.random()*600) + 'ms');
+    if(color) b.style.background = `radial-gradient(circle at 32% 30%, rgba(255,255,255,0.92), ${color} 72%)`;
+    layer.appendChild(b);
+    b.addEventListener('animationend', () => b.remove());
+  }
+}
+
+// 彩带 / confetti (canvas)
+let fxCanvas, fxCtx, fxParticles = [], fxRAF = null;
+const FX_COLORS = ['#C4472E','#C89438','#5DA07A','#4F86A6','#E0B04A','#D96A4A','#8E6FB0'];
+function fxInit(){
+  fxCanvas = document.getElementById('fx-canvas'); if(!fxCanvas) return;
+  fxCtx = fxCanvas.getContext('2d'); fxResize();
+  window.addEventListener('resize', fxResize);
+}
+function fxResize(){ if(!fxCanvas) return; const d=window.devicePixelRatio||1; fxCanvas.width=innerWidth*d; fxCanvas.height=innerHeight*d; fxCtx.setTransform(d,0,0,d,0,0); }
+function confettiBurst(x, y, amount){
+  if(!fxCtx) fxInit(); if(!fxCtx) return;
+  amount = amount || 40;
+  for(let i=0;i<amount;i++){
+    const a = Math.random()*Math.PI*2, sp = 3 + Math.random()*8;
+    fxParticles.push({ x, y, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp - 4, g:0.16+Math.random()*0.12,
+      w:5+Math.random()*7, h:9+Math.random()*9, rot:Math.random()*Math.PI, vr:(Math.random()-0.5)*0.34,
+      c:FX_COLORS[i % FX_COLORS.length], life:0, max:60+Math.random()*45 });
+  }
+  if(!fxRAF) fxRAF = requestAnimationFrame(fxStep);
+}
+function fxStep(){
+  fxCtx.clearRect(0,0,fxCanvas.width,fxCanvas.height);
+  fxParticles = fxParticles.filter(p => p.life < p.max);
+  fxParticles.forEach(p => {
+    p.life++; p.vy += p.g; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+    fxCtx.save(); fxCtx.globalAlpha = Math.max(0, 1 - p.life/p.max);
+    fxCtx.translate(p.x, p.y); fxCtx.rotate(p.rot);
+    fxCtx.fillStyle = p.c; fxCtx.fillRect(-p.w/2, -p.h/2, p.w, p.h); fxCtx.restore();
+  });
+  if(fxParticles.length) fxRAF = requestAnimationFrame(fxStep);
+  else { fxRAF = null; fxCtx.clearRect(0,0,fxCanvas.width,fxCanvas.height); }
+}
 
 /* =====================================================================
    5. 视图路由 / View routing
@@ -508,38 +566,78 @@ function buildSectionBoard(){
         <span class="sc-desc">${s.desc[LANG]}</span>
       </span>${soonTag}`;
     if(s.view){
-      card.addEventListener('click', () => {
+      card.addEventListener('click', (ev) => {
         ensureAudio(); popSound();
-        if(s.view === 'quiz') startQuiz();
-        else if(s.view === 'puzzle') startPuzzle();
-        else if(s.view === 'dict') startDict();
-        else if(s.view === 'about'){ buildAbout(); showView('about'); }
-        else showView(s.view);
+        bubbleBurst(ev.clientX, ev.clientY);                 // 触碰冒泡 / bubbles on tap
+        card.classList.add('pressed'); setTimeout(()=>card.classList.remove('pressed'), 320);
+        const go = () => {
+          if(s.view === 'quiz') startQuiz();
+          else if(s.view === 'puzzle') startPuzzle();
+          else if(s.view === 'dict') startDict();
+          else if(s.view === 'about'){ buildAbout(); showView('about'); }
+          else showView(s.view);
+        };
+        setTimeout(go, 160);                                 // 让动效先冒一下 / let the effect play
       });
     }
     board.appendChild(card);
   });
 }
 
-// 「什么是甲骨文」板块：渲染图文面板 / build the "What Are Oracle Bones?" panels
-function buildAbout(){
+// 「什么是甲骨文」板块：一步一屏，点一下裂开坠落进入下一步
+// "What Are Oracle Bones?": one step per screen; tap → crack & fall → next step
+const aboutEls = {
+  stage: document.getElementById('about-stage'),
+  dots:  document.getElementById('about-dots'),
+  hint:  document.getElementById('about-hint'),
+  cta:   document.getElementById('about-cta'),
+};
+let aboutIndex = 0, aboutAnimating = false;
+
+function buildAbout(){                     // 进入板块从第一步开始 / entering starts at step 1
   document.getElementById('about-title').textContent = UI.about_title[LANG];
-  const wrap = document.getElementById('about-panels');
-  wrap.innerHTML = '';
-  ABOUT.forEach((p, i) => {
-    const panel = document.createElement('div');
-    panel.className = 'about-panel';
-    panel.innerHTML = `
-      <div class="ap-fig">${p.svg}</div>
-      <div class="ap-text">
-        <h3 class="ap-title"><span class="ap-num">${i+1}</span>${p.title[LANG]}</h3>
-        <p class="ap-body">${p.body[LANG]}</p>
-      </div>`;
-    wrap.appendChild(panel);
-  });
-  // 结尾引导去玩猜字游戏 / closing link to the quiz
-  const cta = document.getElementById('about-cta');
-  cta.textContent = UI.about_cta[LANG];
+  aboutEls.cta.textContent = UI.about_cta[LANG];
+  aboutIndex = 0; aboutAnimating = false;
+  renderAboutStep(false);
+}
+
+function renderAboutStep(entering){
+  const p = ABOUT[aboutIndex];
+  const last = aboutIndex === ABOUT.length - 1;
+  aboutEls.stage.innerHTML = `
+    <div class="about-step${entering ? ' entering' : ''}">
+      <button class="ab-fig" id="ab-fig" aria-label="${LANG==='zh'?'下一步':'next'}">
+        ${p.svg}
+        <span class="ab-crack" aria-hidden="true"><svg viewBox="0 0 120 100" preserveAspectRatio="none">
+          <path d="M60 -4 L53 30 L71 45 L51 60 L67 78 L57 104" fill="none" stroke="#C4472E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg></span>
+      </button>
+      <div class="ab-text">
+        <h3 class="ab-title"><span class="ap-num">${aboutIndex+1}</span>${p.title[LANG]}</h3>
+        <p class="ab-body">${p.body[LANG]}</p>
+      </div>
+    </div>`;
+  document.getElementById('ab-fig').addEventListener('click', advanceAbout);
+  aboutEls.dots.innerHTML = ABOUT.map((_, i) =>
+    `<span class="ab-dot${i===aboutIndex?' on':''}${i<aboutIndex?' done':''}"></span>`).join('');
+  aboutEls.hint.textContent = last
+    ? (LANG==='zh' ? '点一下 · 从头再看一遍' : 'Tap · start over')
+    : (LANG==='zh' ? '点一下甲骨 · 进入下一步' : 'Tap the bone · next step');
+}
+
+function advanceAbout(ev){
+  if(aboutAnimating) return;
+  aboutAnimating = true;
+  ensureAudio(); morphSound();
+  if(ev) bubbleBurst(ev.clientX, ev.clientY);
+  const step = aboutEls.stage.querySelector('.about-step');
+  document.getElementById('ab-fig').classList.add('cracking');   // 裂 / crack
+  setTimeout(() => step.classList.add('falling'), 260);          // 落 / fall
+  setTimeout(() => {
+    aboutIndex = (aboutIndex + 1) % ABOUT.length;                // 到末步则回到开头 / loop after last
+    renderAboutStep(true);
+    aboutAnimating = false;
+  }, 840);
 }
 
 /* =====================================================================
@@ -739,14 +837,32 @@ const quizEls = {
   play: document.getElementById('quiz-play'),
   result: document.getElementById('quiz-result'),
   progress: document.getElementById('quiz-progress'),
+  hearts: document.getElementById('quiz-hearts'),
   score: document.getElementById('quiz-score'),
   glyph: document.getElementById('quiz-glyph'),
+  stage: document.getElementById('quiz-stage'),
+  crack: document.getElementById('quiz-crack'),
+  plus: document.getElementById('quiz-plus'),
   options: document.getElementById('quiz-options'),
   feedback: document.getElementById('quiz-feedback'),
   next: document.getElementById('quiz-next'),
 };
 
-let quizOrder = [], quizIndex = 0, quizScore = 0, quizDone = false, quizWrongThis = false;
+const QUIZ_HEARTS = 3;
+let quizOrder = [], quizIndex = 0, quizDone = false, quizWrongThis = false;
+let quizPoints = 0, quizCombo = 0, quizHearts = QUIZ_HEARTS, quizGameOver = false;
+
+function renderHearts(){
+  quizEls.hearts.innerHTML = Array.from({length:QUIZ_HEARTS}, (_,i) =>
+    `<span class="heart${i < quizHearts ? '' : ' lost'}">♥</span>`).join('');
+}
+// 得分飘字 / floating "+points" popup
+function showQuizPlus(gain, combo){
+  const combTxt = combo >= 2 ? (LANG==='zh' ? ' 连对×'+combo : ' x'+combo) : '';
+  quizEls.plus.textContent = '+' + gain + combTxt;
+  quizEls.plus.classList.remove('show'); void quizEls.plus.offsetWidth; quizEls.plus.classList.add('show');
+}
+function quizPointsLabel(){ return (LANG==='zh' ? '积分 ' : 'Points ') + quizPoints; }
 
 // Fisher–Yates 洗牌 / shuffle
 function shuffle(arr){
@@ -757,8 +873,9 @@ function shuffle(arr){
 
 function startQuiz(){
   quizOrder = shuffle(CHAR_ORDER);
-  quizIndex = 0; quizScore = 0;
+  quizIndex = 0; quizPoints = 0; quizCombo = 0; quizHearts = QUIZ_HEARTS; quizGameOver = false;
   quizEls.play.hidden = false; quizEls.result.hidden = true;
+  renderHearts();
   showQuizQuestion();
   showView('quiz');
 }
@@ -779,8 +896,10 @@ function showQuizQuestion(){
   const key = quizOrder[quizIndex];
   const c = CHARACTERS[key];
 
+  quizEls.stage.classList.remove('burst','shake');
+  quizEls.crack.classList.remove('cracking');
   quizEls.progress.textContent = (LANG==='zh' ? '第 ' : 'No. ') + (quizIndex+1) + ' / ' + quizOrder.length;
-  quizEls.score.textContent = (LANG==='zh' ? '得分 ' : 'Score ') + quizScore;
+  quizEls.score.textContent = quizPointsLabel();
   drawOracle(quizEls.glyph, c);
 
   // 选项：正确答案 + 2 个干扰项 / correct + two distractors
@@ -805,22 +924,39 @@ function chooseAnswer(chosen, correct, btn){
   ensureAudio();
   if(chosen === correct){
     quizDone = true;
-    if(!quizWrongThis) quizScore++;
-    dingSound();
+    if(quizWrongThis) quizCombo = 0; else quizCombo++;      // 连对（首次即对）/ combo = first-try streak
+    const gain = quizWrongThis ? 5 : (10 + Math.max(0, quizCombo-1) * 5);
+    quizPoints += gain;
+    cheerSound();
     [...quizEls.options.children].forEach(b => b.disabled = true);
     btn.classList.add('correct');
+    // 甲骨文裂开 → 迸出彩带 + 飘分 / crack open → confetti + floating points
+    quizEls.crack.classList.add('cracking');
+    setTimeout(() => {
+      quizEls.stage.classList.add('burst');
+      const p = centerOf(quizEls.stage);
+      confettiBurst(p.x, p.y, 44 + quizCombo*5);
+    }, 190);
+    showQuizPlus(gain, quizCombo);
     const c = CHARACTERS[correct];
     const zhMean = c.meaning.zh === c.char ? '' : `，意思是${c.meaning.zh}`;
     const line = LANG==='zh'
       ? `答对了——这是“${c.char}”（${c.pinyin}）${zhMean}。`
       : `Correct — this is “${c.char}” (${c.pinyin}), ${c.meaning.en.toLowerCase()}.`;
     quizEls.feedback.innerHTML = `<span class="qf-zh">${line}</span>`;
-    quizEls.score.textContent = (LANG==='zh' ? '得分 ' : 'Score ') + quizScore;
+    quizEls.score.textContent = quizPointsLabel();
     quizEls.next.hidden = false;
   } else {
-    quizWrongThis = true;
-    popSound();
-    btn.classList.add('wrong'); btn.disabled = true;   // 选错的变灰，可再试 / dim it, let them retry
+    quizWrongThis = true; quizCombo = 0; quizHearts--;
+    buzzSound();
+    btn.classList.add('wrong'); btn.disabled = true;
+    quizEls.stage.classList.add('shake'); setTimeout(() => quizEls.stage.classList.remove('shake'), 450);
+    renderHearts();
+    if(quizHearts <= 0){                                    // 血条空了 → 结束 / out of hearts → over
+      quizDone = true;
+      [...quizEls.options.children].forEach(b => b.disabled = true);
+      setTimeout(() => showQuizResult(true), 700);
+    }
   }
 }
 
@@ -831,23 +967,30 @@ function nextQuizQuestion(){
   else showQuizQuestion();
 }
 
-function showQuizResult(){
+function showQuizResult(gameOver){
+  quizGameOver = !!gameOver;
   quizEls.play.hidden = true;
   quizEls.result.hidden = false;
-  const total = quizOrder.length;
-  // 按得分给一句鼓励 / a line of encouragement by score
-  let zh, en;
-  if(quizScore === total){ zh = '太棒了，全部认出来了！'; en = 'Outstanding — you recognised them all!'; }
-  else if(quizScore >= total - 2){ zh = '很厉害，你已经很懂甲骨文了。'; en = 'Great work — you really know your oracle bones.'; }
-  else if(quizScore >= total/2){ zh = '不错！再玩一次会记得更牢。'; en = 'Nice! Play again to remember even more.'; }
-  else { zh = '好的开始——再试一次，你会越来越熟。'; en = 'A good start — try again and it will click.'; }
+  let title, msg;
+  if(gameOver){
+    title = LANG==='zh' ? '❤ 用完啦' : 'Out of hearts';
+    msg   = LANG==='zh' ? '别灰心，再来一次会更棒！' : "Don't give up — try again, you'll do better!";
+  } else {
+    cheerSound();
+    setTimeout(()=>confettiBurst(innerWidth/2, innerHeight*0.34, 110), 120);
+    setTimeout(()=>confettiBurst(innerWidth*0.28, innerHeight*0.32, 55), 380);
+    setTimeout(()=>confettiBurst(innerWidth*0.72, innerHeight*0.32, 55), 560);
+    title = LANG==='zh' ? '全部闯关成功！' : 'You cleared them all!';
+    msg   = quizPoints >= 100 ? (LANG==='zh' ? '甲骨文小达人！' : 'Oracle-bone champion!')
+                              : (LANG==='zh' ? '干得漂亮！' : 'Nicely done!');
+  }
+  const unit = LANG==='zh' ? ' 分' : ' pts';
   const playAgain = LANG==='zh' ? '再玩一次' : 'Play again';
   const home = LANG==='zh' ? '回首页' : 'Home';
-  const recog = LANG==='zh' ? `你认出了 ${quizScore} / ${total} 个甲骨文` : `You recognised ${quizScore} / ${total} oracle glyphs`;
   quizEls.result.innerHTML = `
-    <div class="qr-score">${quizScore} <small>/ ${total}</small></div>
-    <div class="qr-msg">${recog}</div>
-    <div class="qr-msg-en">${LANG==='zh'?zh:en}</div>
+    <div class="qr-score">${quizPoints}<small>${unit}</small></div>
+    <div class="qr-msg">${title}</div>
+    <div class="qr-msg-en">${msg}</div>
     <div class="qr-actions">
       <button class="big-btn" id="qr-again">${playAgain}</button>
       <button class="big-btn" id="qr-home">${home}</button>
@@ -1088,9 +1231,13 @@ function applyLang(){
   }
   // 游戏进行中切换语言：重画当前题（保留进度与得分）/ refresh quiz text on language switch
   if(views.quiz.classList.contains('active')){
-    if(quizEls.result.hidden) showQuizQuestion(); else showQuizResult();
+    if(quizEls.result.hidden) showQuizQuestion(); else showQuizResult(quizGameOver);
   }
-  if(views.about.classList.contains('active')) buildAbout();
+  if(views.about.classList.contains('active')){
+    document.getElementById('about-title').textContent = UI.about_title[LANG];
+    aboutEls.cta.textContent = UI.about_cta[LANG];
+    renderAboutStep(false);                 // 保留当前步 / keep current step
+  }
   if(views.dict.classList.contains('active')){ refreshDictText(); renderDictResult(); }
   // 拼图进行中切换语言：只更新文字，不打乱进度 / refresh puzzle labels without reshuffling
   if(views.puzzle.classList.contains('active') && pzKey){
@@ -1111,6 +1258,7 @@ function toggleLang(){ ensureAudio(); popSound(); LANG = LANG === 'zh' ? 'en' : 
    ===================================================================== */
 function init(){
   measurePath = document.getElementById('measure-path'); // 量长度/取点用 / for resampling
+  fxInit();                                              // 特效层 / FX layer
   buildGrid();
   buildSectionBoard();
   bindDetailEvents();
