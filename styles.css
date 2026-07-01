@@ -425,15 +425,13 @@ body {
   color: var(--ink); margin: 4px 0 30px;
 }
 /* 一步一屏 / one step at a time */
-.about-stage { min-height: 360px; display: flex; justify-content: center; overflow: hidden; }
+.about-stage { min-height: 360px; display: flex; justify-content: center; overflow: visible; cursor: pointer; }
 .about-step {
   display: flex; flex-direction: column; align-items: center; text-align: center;
   gap: 18px; max-width: 460px; width: 100%;
 }
-.about-step.entering { animation: abEnter .5s cubic-bezier(.2,.7,.3,1) both; }
-@keyframes abEnter { 0%{opacity:0; transform:translateY(-30px) scale(.95);} 100%{opacity:1; transform:none;} }
-.about-step.falling { animation: abFall .58s ease-in forwards; }
-@keyframes abFall { 0%{opacity:1; transform:none;} 100%{opacity:0; transform:translateY(72vh) rotate(15deg);} }
+.about-step.entering { animation: abEnter .6s cubic-bezier(.34,1.56,.64,1) both; }
+@keyframes abEnter { 0%{opacity:0; transform:translateY(-46px) scale(.88) rotate(-3deg);} 60%{opacity:1;} 100%{opacity:1; transform:none;} }
 
 .ab-fig {
   position: relative; width: min(74vw, 264px); aspect-ratio: 6/5;
@@ -442,16 +440,22 @@ body {
   box-shadow: var(--shadow-m);
   transition: transform .16s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease, border-color .18s ease;
 }
-.ab-fig:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 22px rgba(51,41,29,0.15); border-color: var(--seal); }
-.ab-fig:active { transform: scale(0.98); }
+.about-stage:hover .ab-fig { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 22px rgba(51,41,29,0.15); border-color: var(--seal); }
 .ab-fig > svg { width: 78%; height: auto; }
 /* 裂纹覆盖层（点一下画出）/ crack overlay drawn on tap */
-.ab-crack { position: absolute; inset: 8%; display: block; pointer-events: none; }
+.ab-crack { position: absolute; inset: 6%; display: block; pointer-events: none; }
 .ab-crack svg { width: 100%; height: 100%; }
-.ab-crack path { stroke-dasharray: 260; stroke-dashoffset: 260; opacity: 0; }
-.ab-fig.cracking .ab-crack path { animation: crackDraw .28s ease forwards; }
-.ab-fig.cracking { animation: abShiver .28s ease; }
-@keyframes abShiver { 0%,100%{transform:none;} 33%{transform:translateX(-3px) rotate(-1deg);} 66%{transform:translateX(3px) rotate(1deg);} }
+.ab-crack path { stroke-dasharray: 300; stroke-dashoffset: 300; opacity: 0; }
+.ab-fig.cracking .ab-crack path { animation: crackDraw .3s ease forwards; }
+/* 裂 → 抖 → 坠落 / crack → shiver → the bone drops off screen */
+.ab-fig.cracking { animation: abShiver .3s ease; }
+@keyframes abShiver { 0%,100%{transform:none;} 20%{transform:translate(-5px,-2px) rotate(-2deg);} 50%{transform:translate(5px,1px) rotate(2deg);} 80%{transform:translate(-3px,0) rotate(-1deg);} }
+.ab-fig.falling { animation: figFall .6s cubic-bezier(.5,0,.85,.4) forwards; z-index: 20; }
+@keyframes figFall {
+  0%   { transform: none; opacity: 1; }
+  14%  { transform: rotate(-6deg) translateY(-10px); }        /* 先向后仰一下 / tip back */
+  100% { transform: rotate(26deg) translateY(115vh); opacity: 0; }  /* 翻转坠落 / tumble down */
+}
 
 .ab-title { display: flex; align-items: center; justify-content: center; gap: 10px;
   font-family: var(--serif); font-weight: 600; font-size: 1.22rem; color: var(--ink); letter-spacing: 0.03em; }

@@ -490,17 +490,19 @@ function fxInit(){
   window.addEventListener('resize', fxResize);
 }
 function fxResize(){ if(!fxCanvas) return; const d=window.devicePixelRatio||1; fxCanvas.width=innerWidth*d; fxCanvas.height=innerHeight*d; fxCtx.setTransform(d,0,0,d,0,0); }
-function confettiBurst(x, y, amount){
+function confettiBurst(x, y, amount, colors){
   if(!fxCtx) fxInit(); if(!fxCtx) return;
-  amount = amount || 40;
+  amount = amount || 40; const pal = colors || FX_COLORS;
   for(let i=0;i<amount;i++){
     const a = Math.random()*Math.PI*2, sp = 3 + Math.random()*8;
     fxParticles.push({ x, y, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp - 4, g:0.16+Math.random()*0.12,
       w:5+Math.random()*7, h:9+Math.random()*9, rot:Math.random()*Math.PI, vr:(Math.random()-0.5)*0.34,
-      c:FX_COLORS[i % FX_COLORS.length], life:0, max:60+Math.random()*45 });
+      c:pal[i % pal.length], life:0, max:60+Math.random()*45 });
   }
   if(!fxRAF) fxRAF = requestAnimationFrame(fxStep);
 }
+// 碎骨屑（"什么是甲骨文"裂开时）/ bone-dust shards when the bone cracks
+function boneDust(x, y){ confettiBurst(x, y, 24, ['#DBCDAD','#C7B48C','#A88F63','#8A6E45','#EFE6CE','#B79A6B']); }
 function fxStep(){
   fxCtx.clearRect(0,0,fxCanvas.width,fxCanvas.height);
   fxParticles = fxParticles.filter(p => p.life < p.max);
@@ -609,7 +611,8 @@ function renderAboutStep(entering){
       <button class="ab-fig" id="ab-fig" aria-label="${LANG==='zh'?'下一步':'next'}">
         ${p.svg}
         <span class="ab-crack" aria-hidden="true"><svg viewBox="0 0 120 100" preserveAspectRatio="none">
-          <path d="M60 -4 L53 30 L71 45 L51 60 L67 78 L57 104" fill="none" stroke="#C4472E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M60 -4 L53 30 L71 45 L51 60 L67 78 L57 104" fill="none" stroke="#8A2E1C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M53 30 L38 40 M71 45 L86 52 M51 60 L36 70" fill="none" stroke="#8A2E1C" stroke-width="2.6" stroke-linecap="round"/>
         </svg></span>
       </button>
       <div class="ab-text">
@@ -617,7 +620,7 @@ function renderAboutStep(entering){
         <p class="ab-body">${p.body[LANG]}</p>
       </div>
     </div>`;
-  document.getElementById('ab-fig').addEventListener('click', advanceAbout);
+  // 点击整块区域都能进入下一步（不必精准点到甲骨）/ tap anywhere in the stage advances
   aboutEls.dots.innerHTML = ABOUT.map((_, i) =>
     `<span class="ab-dot${i===aboutIndex?' on':''}${i<aboutIndex?' done':''}"></span>`).join('');
   aboutEls.hint.textContent = last
@@ -629,15 +632,18 @@ function advanceAbout(ev){
   if(aboutAnimating) return;
   aboutAnimating = true;
   ensureAudio(); morphSound();
-  if(ev) bubbleBurst(ev.clientX, ev.clientY);
-  const step = aboutEls.stage.querySelector('.about-step');
-  document.getElementById('ab-fig').classList.add('cracking');   // 裂 / crack
-  setTimeout(() => step.classList.add('falling'), 260);          // 落 / fall
+  const fig = document.getElementById('ab-fig');
+  fig.classList.add('cracking');                                 // 裂纹画出 + 抖 / crack draws + shiver
   setTimeout(() => {
-    aboutIndex = (aboutIndex + 1) % ABOUT.length;                // 到末步则回到开头 / loop after last
-    renderAboutStep(true);
+    const p = centerOf(fig);
+    boneDust(p.x, p.y);                                          // 碎骨屑迸出 / bone-dust bursts
+    fig.classList.add('falling');                               // 甲骨坠落 / the bone falls
+  }, 300);
+  setTimeout(() => {
+    aboutIndex = (aboutIndex + 1) % ABOUT.length;                // 末步则回到开头 / loop after last
+    renderAboutStep(true);                                      // 下一步从上方落入 / next drops in
     aboutAnimating = false;
-  }, 840);
+  }, 900);
 }
 
 /* =====================================================================
@@ -1271,6 +1277,7 @@ function init(){
   });
   // 「什么是甲骨文」末尾的按钮：直接开始猜字游戏 / about-page CTA starts the quiz
   document.getElementById('about-cta').addEventListener('click', () => { ensureAudio(); popSound(); startQuiz(); });
+  document.getElementById('about-stage').addEventListener('click', advanceAbout);  // 点整块区域进入下一步
   document.getElementById('lang-toggle').addEventListener('click', toggleLang);
 
   applyLang();
